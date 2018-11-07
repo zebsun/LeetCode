@@ -13,43 +13,34 @@ int main()
 class Solution {
 public:
 	int threeSumClosest(vector<int>& nums, int target) {
-		
+
+		if (nums.size() < 3) return 0;
+
 		sort(nums.begin(), nums.end());
-		
-		
-		vector<vector<int>> ret;
-		int res = 0;
 
-
-
-		for (int i = 0; i < nums.size(); i++)
+		int closest = nums[0] + nums[1] + nums[2];
+		for (int i = 0; i < nums.size() - 2; i++)
 		{
-			int start = i + 1, end = nums.size() - 1;
-			if (nums[i] + nums[start] + nums[end] == target)
+			int start = i + 1;
+			int end = nums.size() - 1;
+			while (start < end)
 			{
-				return target;
-				start++;
-				end--;
-				while (start < end && nums[start] == nums[start - 1]) start++;
-				while (start < end && nums[end] == nums[end - 1]) end--;
-			}
-			else
-			{
-				ret.push_back({ nums[i], nums[start], nums[end] });
+				int cursum = nums[i] + nums[start] + nums[end];
+				if (cursum == target) return cursum;
+				if (abs(cursum - target) < abs(closest - target))
 				{
-					int res = accumulate(ret.begin(),ret.end(),0);
-					for (int k = 0; k < nums.size() - 2; k++)
-					{
-						int ans = min((*nums.end() - *nums.begin() -target), (res-target));
-					}
-
+					closest = cursum;
 				}
-				return res;
-				start++;
-				end--;
-				while (start < end && nums[start] == nums[start - 1]) start++;
-				while (start < end && nums[end] == nums[end - 1]) end--;
+				if (cursum > closest)
+				{
+					end--;
+				}
+				else
+				{
+					start++;
+				}
 			}
 		}
+		return closest;
 	}
 };
