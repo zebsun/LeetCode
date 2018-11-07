@@ -13,34 +13,38 @@ int main()
 class Solution {
 public:
 	vector<vector<int>> threeSum(vector<int>& nums) {
-		int len = nums.size();
-		vector<vector<int>> res;
-		for (int i = 0; i < len - 2; i++)
-		{
-			for (int k = i + 1; k < len - 1; k++)
-			{
-				int target = -(nums[i] + nums[k]);
-				vector<int>::iterator nums3 = find(nums.begin() + k + 1, nums.end(), target);
-				if (nums3 != nums.end())
-				{
-					vector<int> vi = adjust(nums[i], nums[k], nums3);
-					vector< vector<int> >::iterator iter = find(res.begin(), res.end(), vi);
-					if (iter == res.end())
-						res.push_back(vi);
-				}
+		if (nums.size() < 3) return {};
 
+		vector<vector<int>> ret;
+		sort(nums.begin(), nums.end());
+
+		for (int i = 0; i < nums.size(); )
+		{
+			int start = i + 1, end = nums.size() - 1;
+			while (start < end)
+			{
+				if (nums[i] + nums[start] + nums[end] == 0)
+				{
+					ret.push_back({ nums[i], nums[start], nums[end] });
+					start++;
+					end--;
+					while (start < end && nums[start] == nums[start - 1]) start++;
+					while (start < end && nums[end] == nums[end + 1]) end--;
+				}
+				else if (nums[i] + nums[start] + nums[end] < 0)
+				{
+					start++;
+					while (start < end && nums[start] == nums[start - 1]) start++;
+				}
+				else
+				{
+					end--;
+					while (start < end && nums[end] == nums[end + 1]) end--;
+				}
 			}
+			i++;
+			while (i < nums.size() && nums[i] == nums[i - 1]) i++;
 		}
-		return res;
-	}
-private:
-	vector<int> adjust(int& a, int &b, int &c)
-	{
-		vector<int> vi;
-		vi.push_back(a);
-		vi.push_back(b);
-		vi.push_back(c);
-		sort(vi.begin(), vi.end());
-		return vi;
+		return ret;
 	}
 };
