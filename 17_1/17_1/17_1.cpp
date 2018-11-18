@@ -33,7 +33,7 @@ public:
 
 		for (int i = 0; i < digits.size(); i++) {
 			int size = res.size();
-			for (int j = 0; j < size(); j++) {
+			for (int j = 0; j < size(; j++) {
 				string cur = res[0];
 				res.erase(res.begin());
 				for (int k = 0; k < dict[digits[i] - '0']; k++) {
